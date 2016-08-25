@@ -1,0 +1,10 @@
+# User specific & automatically generated files #
+#################################################
+composer.lock
+/vendor/*
+/donnees/
+
+# OS generated files #
+######################
+.DS_Store
+Thumbs.db

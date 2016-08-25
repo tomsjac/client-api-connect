@@ -1,0 +1,23 @@
+{
+	"name"			: "api/client_jwt",
+	"description"	: "Connection class to Api by JWT",
+	"type"			: "project",
+    
+	"support"		: {},
+    	
+	"require"		: {
+		"php": ">=7.0",
+        "guzzlehttp/guzzle": "^6.2",
+        "firebase/php-jwt": "^4.0"
+	},
+	
+	"require-dev": {},
+		
+	"autoload": {
+		"psr-4": {
+			"apiClient\\": "src"
+		}
+	},
+
+	"minimum-stability"	: "stable"
+}
