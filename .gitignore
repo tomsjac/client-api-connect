@@ -2,7 +2,7 @@
 #################################################
 composer.lock
 /vendor/*
-/donnees/
+/donnees
 
 # OS generated files #
 ######################
