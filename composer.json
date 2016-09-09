@@ -1,10 +1,8 @@
 {
-	"name"			: "api/client_jwt",
+    "name"			: "clientApiConnect/jwt",
 	"description"	: "Connection class to Api by JWT",
 	"type"			: "project",
-    
-	"support"		: {},
-    	
+        	
 	"require"		: {
 		"php": ">=7.0",
         "guzzlehttp/guzzle": "^6.2",
