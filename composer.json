@@ -7,7 +7,7 @@
             "name": "Thomas Jacquey",
             "role": "Developer"
         },
-    ]
+    ],
 	"require"		: {
 		"php": ">=7.0",
         "guzzlehttp/guzzle": "^6.2",
