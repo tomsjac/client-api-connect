@@ -1,5 +1,5 @@
 <?php
-namespace apiClient\jwt;
+namespace cApiConnect\jwt;
 
 /**
  * Managing calls to the API
@@ -32,7 +32,7 @@ class Client
      * @param str $baseUri  base url call the api
      * @param int $timeOut
      */
-    public function __construct(\apiClient\jwt\Token $token, $baseUri = '', $timeOut = 2.0)
+    public function __construct(\cApiConnect\jwt\Token $token, $baseUri = '', $timeOut = 2.0)
     {
         $this->clientGuzzle = new Client([
             'base_uri' => $baseUri,
@@ -79,7 +79,7 @@ class Client
 
     /**
      * Return the Token object
-     * @return \apiClient\jwt\Token
+     * @return \cApiConnect\jwt\Token
      */
     public function getToken()
     {

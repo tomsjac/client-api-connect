@@ -1,5 +1,5 @@
 <?php
-namespace apiClient\jwt;
+namespace cApiConnect\jwt;
 
 /**
  * Managing Token for calls

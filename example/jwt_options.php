@@ -9,7 +9,7 @@ $clientSecret = 'client-SECRET';
 /**
  * Create Object token
  */
-$token = new apiClient\jwt\Token($clientId, $clientSecret);
+$token = new cApiConnect\jwt\Token($clientId, $clientSecret);
 //Set UrL Call to retrieve the token
 $token->setPath('authentication/token');
 //Modify Method request (optional)
@@ -28,7 +28,7 @@ $token->setQueryParam(
 /**
  * Create Object Client for calls to the API
  */
-$client = new apiClient\jwt\Client($token, $baseUri);
+$client = new cApiConnect\jwt\Client($token, $baseUri);
 
 /**
  * Request Info Token
