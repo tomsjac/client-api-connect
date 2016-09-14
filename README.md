@@ -8,6 +8,8 @@ Currently the supported authentication method is JWT (JSON Web Token)
 ## Requirements
 
 * Composer (https://getcomposer.org)
+* packagist : [tomsjac/client-api-connect](https://packagist.org/packages/tomsjac/client-api-connect)
+
 
 ## Features
 
