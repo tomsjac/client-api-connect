@@ -37,6 +37,7 @@ class Client
         $this->clientGuzzle = new Client([
             'base_uri' => $baseUri,
             'timeout' => $timeOut,
+            'exceptions' => false
         ]);
 
         $this->token = $token;
