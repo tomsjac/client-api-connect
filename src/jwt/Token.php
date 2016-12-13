@@ -96,7 +96,9 @@ class Token
         $this->tokenSignature = $signature;
         //Collect information token to the expiration date
         $dataToken        = $this->readDataToken();
-        $this->timeExpire = $dataToken['exp'];
+        if ($dataToken != null) {
+            $this->timeExpire = $dataToken['exp'];
+        }
     }
 
     /**
@@ -171,8 +173,11 @@ class Token
      */
     protected function readDataToken()
     {
-        list($headb64, $bodyb64, $cryptob64) = explode('.', $this->getTokenSignature());
-        $contentDecode = \Firebase\JWT\JWT::urlsafeB64Decode($bodyb64);
-        return json_decode($contentDecode, true);
+        if ($this->getTokenSignature() != null) {
+            list($headb64, $bodyb64, $cryptob64) = explode('.', $this->getTokenSignature());
+            $contentDecode = \Firebase\JWT\JWT::urlsafeB64Decode($bodyb64);
+            return json_decode($contentDecode, true);
+        }
+        return null;
     }
 }
