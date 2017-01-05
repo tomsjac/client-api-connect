@@ -1,7 +1,9 @@
 {
     "name"			: "tomsjac/client-api-connect",
 	"description"	: "Connection class to Api by JWT",
+    "keywords"      : ["Jwt", "API", "Client", "Json Token"],
 	"type"			: "library",
+    "license"       : "MIT",
     "authors": [
         {
             "name": "Thomas Jacquey",
@@ -9,7 +11,7 @@
         }
     ],
 	"require"		: {
-		"php": ">=7.0",
+		"php": ">=5.6.0",
         "guzzlehttp/guzzle": "^6.2",
         "firebase/php-jwt": "^4.0"
 	},
