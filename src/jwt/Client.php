@@ -30,15 +30,18 @@ class Client
      * Construct
      * @param \jwtClient\Token $token
      * @param str $baseUri  base url call the api
-     * @param int $timeOut
+     * @param Array $options  Option For guzzle : http://docs.guzzlephp.org/en/latest/request-options.html
      */
-    public function __construct(\cApiConnect\jwt\Token $token, $baseUri = '', $timeOut = 2.0)
+    public function __construct(\cApiConnect\jwt\Token $token, $baseUri = '', $options = [])
     {
-        $this->clientGuzzle = new Client([
+        $defaultOption = [
             'base_uri' => $baseUri,
-            'timeout' => $timeOut,
-            'exceptions' => false
-        ]);
+            'timeout' => '2.0',
+            'exceptions' => false,
+        ];
+
+        $optionsGuzzle      = array_replace_recursive($defaultOption, $options);
+        $this->clientGuzzle = new Client($optionsGuzzle);
 
         $this->token = $token;
     }
