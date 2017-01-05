@@ -41,7 +41,7 @@ var_dump(json_decode($response->getBody()->getContents()));
 /**
  * Request With query POST
  */
-$response = $client->request('POST', 'custonner/infos/10',
+$response = $client->request('POST', 'customer/infos/10',
     array(
     'form_params' => [
         'offset' => 2,
@@ -53,7 +53,7 @@ var_dump(json_decode($response->getBody()->getContents()));
 /**
  * Request With query GET
  */
-$response = $client->request('GET', 'custonner/infos/10',
+$response = $client->request('GET', 'customer/infos/10',
     array(
     'query' => [
         'offset' => 2,
