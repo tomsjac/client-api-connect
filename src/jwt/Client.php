@@ -5,7 +5,7 @@ namespace cApiConnect\jwt;
  * Managing calls to the API
  * @author thomas
  */
-use GuzzleHttp\Client;
+use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\ClientException;
 
@@ -41,7 +41,7 @@ class Client
         ];
 
         $optionsGuzzle      = array_replace_recursive($defaultOption, $options);
-        $this->clientGuzzle = new Client($optionsGuzzle);
+        $this->clientGuzzle = new GuzzleClient($optionsGuzzle);
 
         $this->token = $token;
     }
