@@ -1,4 +1,5 @@
 <?php
+
 namespace cApiConnect\jwt;
 
 /**
@@ -28,6 +29,12 @@ class Client
     protected $stackCache;
 
     /**
+     * Options Guzzle
+     * @var Array
+     */
+    protected $options;
+
+    /**
      * @var \jwtClient\Token
      */
     protected $token;
@@ -45,20 +52,13 @@ class Client
      */
     public function __construct(\cApiConnect\jwt\Token $token, $baseUri = '', $options = [])
     {
-        $defaultOption = [
+        $this->options = [
             'base_uri' => $baseUri,
             'timeout' => '2.0',
             'exceptions' => false,
         ];
 
-        //Handler Cache
-        if ($this->stackCache != null) {
-            $defaultOption['handler'] = $this->stackCache;
-        }
-
-        $optionsGuzzle      = array_replace_recursive($defaultOption, $options);
-        $this->clientGuzzle = new GuzzleClient($optionsGuzzle);
-
+        $this->addOptionClient($options);
         $this->token = $token;
     }
 
@@ -71,7 +71,8 @@ class Client
      */
     public function request($method, $uri, $options = array())
     {
-        $token = $this->generateToken();
+        $guzzle = $this->initClient();
+        $token  = $this->generateToken();
 
         //Add header Token
         $headerToken = [
@@ -82,7 +83,7 @@ class Client
         $options     = array_replace_recursive($options, $headerToken);
 
         try {
-            return $this->clientGuzzle->request($method, $uri, $options);
+            return $guzzle->request($method, $uri, $options);
         } catch (ClientException $e) {
             return $this->getError($e);
         }
@@ -95,6 +96,17 @@ class Client
     public function setHeaderAuthorize($txt)
     {
         $this->headerAuhtorize = $txt;
+    }
+
+    /**
+     * Add Option Client With the data Default
+     * @param Array $data Option
+     * @return boolean
+     */
+    public function addOptionClient($data)
+    {
+        $this->options = array_replace_recursive($this->options, $data);
+        return true;
     }
 
     /**
@@ -112,7 +124,7 @@ class Client
      */
     public function getClient()
     {
-        return $this->clientGuzzle;
+        return $this->initClient();
     }
 
     /**
@@ -165,8 +177,20 @@ class Client
             $stack            = HandlerStack::create();
             $this->stackCache = $stack->push($cache);
         }
-
+        $this->addOptionClient(['handler' => $this->stackCache]);
         return $this->stackCache;
+    }
+
+    /**
+     * Init Guzzle
+     * @param Bool $force   Force to the generated
+     */
+    protected function initClient($force = false)
+    {
+        if ($this->clientGuzzle != null or $force == true) {
+            $this->clientGuzzle = new GuzzleClient($this->options);
+        }
+        return $this->clientGuzzle;
     }
 
     /**
