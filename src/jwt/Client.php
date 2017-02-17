@@ -8,6 +8,11 @@ namespace cApiConnect\jwt;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\HandlerStack;
+use Kevinrob\GuzzleCache\CacheMiddleware;
+use League\Flysystem\Adapter\Local;
+use Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy;
+use Kevinrob\GuzzleCache\Storage\FlysystemStorage;
 
 class Client
 {
@@ -15,6 +20,12 @@ class Client
      * @var \GuzzleHttp\Client
      */
     protected $clientGuzzle;
+
+    /**
+     * Header Cache Guzzle
+     * @var GuzzleHttp\HandlerStack
+     */
+    protected $stackCache;
 
     /**
      * @var \jwtClient\Token
@@ -39,6 +50,11 @@ class Client
             'timeout' => '2.0',
             'exceptions' => false,
         ];
+
+        //Handler Cache
+        if ($this->stackCache != null) {
+            $defaultOption['handler'] = $this->stackCache;
+        }
 
         $optionsGuzzle      = array_replace_recursive($defaultOption, $options);
         $this->clientGuzzle = new GuzzleClient($optionsGuzzle);
@@ -125,6 +141,32 @@ class Client
             }
         }
         return $token->getTokenSignature();
+    }
+
+    /**
+     * Activate Cache Request
+     * @param Str $folderCache
+     * @return GuzzleHttp\HandlerStack
+     */
+    public function activateCache($folderCache)
+    {
+        if ($this->stackCache == null) {
+            //Create folder
+            if (is_dir($folderCache) == false) {
+                mkdir($folderCache, 0777, true);
+                chmod($folderCache, 0777);
+            }
+
+            $localStorage  = new Local($folderCache);
+            $systemStorage = new FlysystemStorage($localStorage);
+            $cacheStrategy = new PrivateCacheStrategy($systemStorage);
+            $cache         = new CacheMiddleware($cacheStrategy);
+
+            $stack            = HandlerStack::create();
+            $this->stackCache = $stack->push($cache);
+        }
+
+        return $this->stackCache;
     }
 
     /**

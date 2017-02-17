@@ -29,6 +29,7 @@ $token->setQueryParam(
  * Create Object Client for calls to the API
  */
 $client = new cApiConnect\jwt\Client($token, $baseUri);
+$client->activateCache('/path/to/cache');
 
 /**
  * Request Info Token

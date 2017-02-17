@@ -14,6 +14,7 @@ Currently the supported authentication method is JWT (JSON Web Token)
 ## Features
 
 * HTTP Client : [Guzzle](https://github.com/guzzle/guzzle)
+* HTTP Client Cache : [Guzzle cache](https://github.com/Kevinrob/guzzle-cache-middleware)
 * JSON Web Token : [php-jwt](https://github.com/firebase/php-jwt)
 
 ## Installation
