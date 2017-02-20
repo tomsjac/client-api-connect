@@ -32,7 +32,7 @@ class Client
      * Options Guzzle
      * @var Array
      */
-    protected $options;
+    protected $options = [];
 
     /**
      * @var \jwtClient\Token
@@ -52,12 +52,17 @@ class Client
      */
     public function __construct(\cApiConnect\jwt\Token $token, $baseUri = '', $options = [])
     {
-        $this->options = [
+        //Default Option
+        $this->addOptionClient([
             'base_uri' => $baseUri,
             'timeout' => '2.0',
             'exceptions' => false,
-        ];
+            'headers' => [
+                'Pragma' => 'no-cache',
+            ]
+        ]);
 
+        //Add option User
         $this->addOptionClient($options);
         $this->token = $token;
     }
@@ -157,10 +162,11 @@ class Client
 
     /**
      * Activate Cache Request
-     * @param Str $folderCache
+     * @param Str $folderCache  Folder Save File cache
+     * @param Int $time     Time in second of reloading of the cache
      * @return GuzzleHttp\HandlerStack
      */
-    public function activateCache($folderCache)
+    public function activateCache($folderCache, $time = 60)
     {
         if ($this->stackCache == null) {
             //Create folder
@@ -175,9 +181,18 @@ class Client
             $cache         = new CacheMiddleware($cacheStrategy);
 
             $stack            = HandlerStack::create();
-            $this->stackCache = $stack->push($cache);
+            $stack->push($cache);
+            $this->stackCache = $stack;
         }
         $this->addOptionClient(['handler' => $this->stackCache]);
+
+        //Control Cache
+        $this->addOptionClient(['headers' => [
+                'Cache-Control' => 'public, max-age='.$time,
+                'Pragma' => 'cache',
+            ]
+        ]);
+
         return $this->stackCache;
     }
 
@@ -187,7 +202,7 @@ class Client
      */
     protected function initClient($force = false)
     {
-        if ($this->clientGuzzle != null or $force == true) {
+        if ($this->clientGuzzle == null or $force == true) {
             $this->clientGuzzle = new GuzzleClient($this->options);
         }
         return $this->clientGuzzle;
