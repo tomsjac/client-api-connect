@@ -1,5 +1,5 @@
 {
-    "name"			: "tomsjac/client-api-connect",
+    "name"			: "packagwcd/client-api-connect",
 	"description"	: "Connection class to Api by JWT",
     "keywords"      : ["Jwt", "API", "Client", "Json Token"],
 	"type"			: "library",
