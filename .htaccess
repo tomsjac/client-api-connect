@@ -5,7 +5,7 @@ AddDefaultCharset UTF-8
 
 #Entete pour forcer à passer le projet en version souhaitée
 <IfModule mod_fcgid.c>
-	AddHandler php-7-0 .php
+	AddHandler php-7-1 .php
 </IfModule>
 
 <IfModule mod_php7.c>
