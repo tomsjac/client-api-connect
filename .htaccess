@@ -1,0 +1,13 @@
+# ----------------------------------------------------------------------
+# CONFIG APACHE ET PHP #
+# ----------------------------------------------------------------------
+AddDefaultCharset UTF-8
+
+#Entete pour forcer à passer le projet en version souhaitée
+<IfModule mod_fcgid.c>
+	AddHandler php-7-0 .php
+</IfModule>
+
+<IfModule mod_php7.c>
+    php_flag opcache.enable 0
+</IfModule>

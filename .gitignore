@@ -3,6 +3,8 @@
 composer.lock
 /vendor/*
 /donnees
+/example/real_data.php
+/cache
 
 # OS generated files #
 ######################
