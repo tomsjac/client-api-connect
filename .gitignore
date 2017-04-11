@@ -6,6 +6,7 @@ composer.lock
 /example/real_data.php
 /cache
 /README_internal.md
+/README_external.md
 
 # OS generated files #
 ######################
