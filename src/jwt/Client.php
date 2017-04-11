@@ -23,10 +23,10 @@ class Client
     protected $clientGuzzle;
 
     /**
-     * Header Cache Guzzle
-     * @var GuzzleHttp\HandlerStack
+     * Cache
+     * @var \cApiConnect\cache\ICache
      */
-    protected $stackCache;
+    protected $cache;
 
     /**
      * Options Guzzle
@@ -120,6 +120,10 @@ class Client
      */
     public function getToken()
     {
+        if (is_null($this->cache) === false) {
+            $fileCache = $this->token->getCacheName();
+            $this->token->setTokenSignature($this->cache->getHandler()->read($fileCache));
+        }
         return $this->token;
     }
 
@@ -142,7 +146,6 @@ class Client
 
         //check if token expired
         if ($token->isTokenExpired() == true) {
-
             $methodCall = $token->getMethod();
             $uriCall    = $token->getPath();
             $queryCall  = $token->getParamQuery();
@@ -151,8 +154,8 @@ class Client
                 $responseKey = $this->getClient()->request(
                     $methodCall, $uriCall, ['form_params' => $queryCall]
                 );
-                $dataToken   = json_decode($responseKey->getBody(), true);
-                $token->setTokenSignature($dataToken[$token->getTokenKeyName()]);
+
+                $this->saveToken(json_decode($responseKey->getBody(), true));
             } else {
                 trigger_error('The url for the token generation is not defined', E_USER_ERROR);
             }
@@ -164,36 +167,40 @@ class Client
      * Activate Cache Request
      * @param Str $folderCache  Folder Save File cache
      * @param Int $time     Time in second of reloading of the cache
+     * @param Bool $tokenOnly   Cache only token
      * @return GuzzleHttp\HandlerStack
      */
-    public function activateCache($folderCache, $time = 60)
+    public function activateCache($folderCache, $time = 60, $tokenOnly = false)
     {
-        if ($this->stackCache == null) {
-            //Create folder
-            if (is_dir($folderCache) == false) {
-                mkdir($folderCache, 0777, true);
-                chmod($folderCache, 0777);
-            }
+        $this->cache = new \cApiConnect\cache\Cache('cacheFile', $time);
+        $stack       = $this->cache->getHandler();
+        $stack->setFolder($folderCache);
 
-            $localStorage  = new Local($folderCache);
-            $systemStorage = new FlysystemStorage($localStorage);
-            $cacheStrategy = new PrivateCacheStrategy($systemStorage);
-            $cache         = new CacheMiddleware($cacheStrategy);
+        if ($tokenOnly == false) {
+            //Add handler Option guzzle
+            $this->addOptionClient(['handler' => $stack->getStack()]);
 
-            $stack            = HandlerStack::create();
-            $stack->push($cache);
-            $this->stackCache = $stack;
+            //Add Header Control Cache
+            $this->addOptionClient(['headers' => $this->cache->getHeaderCache()]);
         }
-        $this->addOptionClient(['handler' => $this->stackCache]);
 
-        //Control Cache
-        $this->addOptionClient(['headers' => [
-                'Cache-Control' => 'public, max-age='.$time,
-                'Pragma' => 'cache',
-            ]
-        ]);
+        //Generate Token Name Cache
+        $this->token->setCacheName(hash('ripemd160', $this->token->getTokenKeyName()).'.jwt');
+    }
 
-        return $this->stackCache;
+    /**
+     * Save token data, data from API call
+     * @param Array $data
+     */
+    protected function saveToken($data)
+    {
+        $dataToken = $data[$this->token->getTokenKeyName()];
+        $this->token->setTokenSignature($dataToken);
+
+        if (is_null($this->cache) === false) {
+            $fileCache = $this->token->getCacheName();
+            $this->cache->getHandler()->write($fileCache, $dataToken);
+        }
     }
 
     /**

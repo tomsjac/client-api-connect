@@ -15,6 +15,11 @@ class Token
     protected $tokenKeyName = 'token';
 
     /**
+     * @var string
+     */
+    protected $cacheName = 'tokenCache';
+
+    /**
      * @var string/int
      */
     protected $clientId;
@@ -110,6 +115,16 @@ class Token
         $this->tokenKeyName = $nameKey;
     }
 
+
+    /**
+     * Set Cache name for the token (File, key ..)
+     * @param str $nameCache
+     */
+    public function setCacheName($nameCache)
+    {
+        $this->cacheName = $nameCache;
+    }
+
     /**
      * Return the signature token
      * @return str
@@ -126,6 +141,15 @@ class Token
     public function getTokenKeyName()
     {
         return $this->tokenKeyName;
+    }
+
+    /**
+     * Return Cache name for the token (File, key ..)
+     * @return str
+     */
+    public function getCacheName()
+    {
+        return $this->cacheName;
     }
 
     /**
