@@ -5,6 +5,7 @@ composer.lock
 /donnees
 /example/real_data.php
 /cache
+/README_internal.md
 
 # OS generated files #
 ######################
