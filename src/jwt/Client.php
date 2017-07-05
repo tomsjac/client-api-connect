@@ -50,7 +50,7 @@ class Client
      * @param str $baseUri  base url call the api
      * @param Array $options  Option For guzzle : http://docs.guzzlephp.org/en/latest/request-options.html
      */
-    public function __construct(\cApiConnect\jwt\Token $token, $baseUri = '', $options = [])
+    public function __construct(\cApiConnect\jwt\Token $token = null, $baseUri = '', $options = [])
     {
         //Default Option
         $this->addOptionClient([
@@ -128,6 +128,20 @@ class Client
     }
 
     /**
+     * Set un nouveau token à l'api client
+     * @param \cApiConnect\jwt\Token $token
+     */
+    public function setNewToken(\cApiConnect\jwt\Token $token)
+    {
+        $this->token = $token;
+
+        if (is_null($this->cache) === false) {
+            //Generate Token Name Cache
+            $this->token->setCacheName($this->getHashNameToken());
+        }
+    }
+
+    /**
      * Return The guzzle client object
      * @return \GuzzleHttp\Client
      */
@@ -143,6 +157,10 @@ class Client
     public function generateToken()
     {
         $token = $this->getToken();
+
+        if ($token == null) {
+            trigger_error('No token declared, Use setNewToken', E_USER_ERROR);
+        }
 
         //check if token expired
         if ($token->isTokenExpired() == true) {
@@ -185,7 +203,9 @@ class Client
         }
 
         //Generate Token Name Cache
-        $this->token->setCacheName(hash('ripemd160', $this->token->getTokenKeyName()).'.jwt');
+        if (is_null($this->token) == false) {
+            $this->token->setCacheName($this->getHashNameToken());
+        }
     }
 
     /**
@@ -227,5 +247,14 @@ class Client
         $error += Psr7\str($e->getResponse());
 
         return $error;
+    }
+
+    /**
+     * Retourne le hash pour le token à mettre en cache
+     * @return string
+     */
+    protected function getHashNameToken()
+    {
+        return hash('ripemd160', $this->token->getClientId()).'.jwt';
     }
 }
