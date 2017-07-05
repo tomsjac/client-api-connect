@@ -171,6 +171,24 @@ class Token
     }
 
     /**
+     * Retourne le client ID
+     * @return string
+     */
+    public function getClientId()
+    {
+        return $this->clientId;
+    }
+
+    /**
+     * retourne le client secret
+     * @return string
+     */
+    public function getClientSecret()
+    {
+        return $this->clientSecret;
+    }
+
+    /**
      * Checked if the token is not expired
      * @return Bool
      */
