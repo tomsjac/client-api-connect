@@ -83,6 +83,7 @@ class Client
         $headerToken = [
             'headers' => [
                 'Authorization' => sprintf($this->headerAuhtorize.' %s', $token),
+                'Script_uri_call' => filter_input(INPUT_SERVER, 'SCRIPT_URI')
             ]
         ];
         $options     = array_replace_recursive($options, $headerToken);
@@ -170,7 +171,9 @@ class Client
 
             if (empty($uriCall) === false or is_null($uriCall) == false) {
                 $responseKey = $this->getClient()->request(
-                    $methodCall, $uriCall, ['form_params' => $queryCall]
+                    $methodCall,
+                    $uriCall,
+                    ['form_params' => $queryCall]
                 );
 
                 $this->saveToken(json_decode($responseKey->getBody(), true));
