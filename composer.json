@@ -11,11 +11,11 @@
         }
     ],
 	"require"		: {
-		"php": ">=5.6.0",
-        "guzzlehttp/guzzle": "^6.2",
-        "kevinrob/guzzle-cache-middleware" : "^2.0",
-        "league/flysystem" : "^1.0",
-        "firebase/php-jwt": "^4.0"
+		"php"							   : ">=7.0",
+        "guzzlehttp/guzzle"                : "^6.3",
+        "kevinrob/guzzle-cache-middleware" : "^3.2",
+        "league/flysystem"                 : "^1.0",
+        "firebase/php-jwt"                 : "^5.0"
 	},
 	
 	"require-dev": {},
