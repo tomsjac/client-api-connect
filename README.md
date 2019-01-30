@@ -8,7 +8,18 @@ Currently the supported authentication method is JWT (JSON Web Token)
 ## Requirements
 
 * Composer (https://getcomposer.org)
-* packagist : [tomsjac/client-api-connect](https://packagist.org/packages/tomsjac/client-api-connect)
+* packagist : [packagwcd/client-api-connect](https://packagist.webcd.fr/packages/packagwcd/client-api-connect)
+
+```json
+{
+	"require"		: {
+        "packagwcd/client-api-connect" : "^1.1"
+	},
+	"repositories": [ { "type": "composer", "url": "https://packagist.webcd.fr/" } ],
+    "require-dependencies": "true",
+}
+```
+Ne pas oublier d'ajouter la ligne "repositories" et "require-dependencies" dans votre composer
 
 
 ## Features
