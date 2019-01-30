@@ -13,7 +13,7 @@ Currently the supported authentication method is JWT (JSON Web Token)
 ```json
 {
 	"require"		: {
-        "packagwcd/client-api-connect" : "~1.0"
+        "packagwcd/client-api-connect" : "^1.1"
 	},
 	"repositories": [ { "type": "composer", "url": "https://packagist.webcd.fr/" } ],
     "require-dependencies": "true",
