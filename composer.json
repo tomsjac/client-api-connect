@@ -12,14 +12,14 @@
     ],
 	"require"		: {
 		"php"							   : ">=7.0",
-        "guzzlehttp/guzzle"                : "^6.3",
-        "kevinrob/guzzle-cache-middleware" : "^3.2",
+        "guzzlehttp/guzzle"                : "^6.5",
+        "kevinrob/guzzle-cache-middleware" : "^3.3",
         "league/flysystem"                 : "^1.0",
-        "firebase/php-jwt"                 : "^5.0"
+        "firebase/php-jwt"                 : "^5.2"
 	},
-	
+
 	"require-dev": {},
-		
+
 	"autoload": {
 		"psr-4": {
 			"cApiConnect\\": "src"
