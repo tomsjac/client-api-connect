@@ -1,5 +1,6 @@
 # User specific & automatically generated files #
 #################################################
+.idea
 composer.lock
 /vendor/*
 /donnees
