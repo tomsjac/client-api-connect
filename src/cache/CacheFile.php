@@ -81,6 +81,7 @@ class CacheFile implements ICache
         $systemStorage = new FlysystemStorage($localStorage);
         $cacheStrategy = new PrivateCacheStrategy($systemStorage);
         $cache         = new CacheMiddleware($cacheStrategy);
+        $cache->setHttpMethods(['GET' => true, 'POST' => false, 'DELETE' => false, 'PUT' => false]);
 
         $stack = \GuzzleHttp\HandlerStack::create();
         $stack->push($cache);
@@ -111,7 +112,7 @@ class CacheFile implements ICache
     {
         $storage = $this->getStorage();
         return new \League\Flysystem\MountManager([
-            'local' => new \League\Flysystem\Filesystem($storage)
+            'local' => new \League\Flysystem\Filesystem($storage, ['disable_asserts' => true])
         ]);
     }
 
@@ -121,8 +122,11 @@ class CacheFile implements ICache
     protected function createFolderSave()
     {
         if (is_dir($this->folderSave) == false) {
-            mkdir($this->folderSave, $this->chmod, true);
-            chmod($this->folderSave, $this->chmod);
+            if (!mkdir($concurrentDirectory = $this->folderSave, $this->chmod, true) && !is_dir($concurrentDirectory)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
+            }else{
+                chmod($this->folderSave, $this->chmod);
+            }
         }
     }
 }
